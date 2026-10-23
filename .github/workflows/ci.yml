@@ -1,0 +1,30 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  my_first_job:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Приветствие
+        run: |
+          echo "Hello DevSecOps!"
+          echo "My first GitHub Actions pipeline is running!"
+          date
+      
+      - name: Информация о системе
+        run: |
+          whoami
+          uname -a
+          echo "Node version: $(node --version)"
+          echo "Python version: $(python3 --version)"
+      
+      - name: Проверка Docker
+        run: |
+          docker --version
+          docker run hello-world
