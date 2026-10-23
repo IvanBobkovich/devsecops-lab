@@ -1,4 +1,4 @@
-name: DevSecOps Pipeline
+name: Python Linting
 
 on:
   push:
@@ -7,24 +7,24 @@ on:
     branches: [ main ]
 
 jobs:
-  my_first_job:
+  lint:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Приветствие
-        run: |
-          echo "Hello DevSecOps!"
-          echo "My first GitHub Actions pipeline is running!"
-          date
+      - name: Checkout code
+        uses: actions/checkout@v4
       
-      - name: Информация о системе
-        run: |
-          whoami
-          uname -a
-          echo "Node version: $(node --version)"
-          echo "Python version: $(python3 --version)"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       
-      - name: Проверка Docker
+      - name: Install linter
         run: |
-          docker --version
-          docker run hello-world
+          python -m pip install --upgrade pip
+          pip install flake8
+      
+      - name: Run linter
+        run: |
+          echo "Checking code style..."
+          flake8 app.py --max-line-length=120 || echo "Linting failed!"
